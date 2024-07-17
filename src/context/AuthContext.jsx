@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { auth } from '../firebase/firebase'
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut, updateCurrentUser, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateCurrentUser, updateProfile } from 'firebase/auth';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 
 import { db } from '../firebase/firebase';
@@ -55,6 +55,9 @@ export function AuthProvider({ children }) {
     function updateEmail(uid, email) {
         return updateCurrentUser(auth, uid, { email: email })
     }
+    function sendPasswordReset(email) {
+        sendPasswordResetEmail(auth, email)
+    }
     const value = {
         currentUser,
         signup,
@@ -62,6 +65,7 @@ export function AuthProvider({ children }) {
         verifyUser,
         updateDisplayName,
         login,
+        sendPasswordReset,
         logout
     }
   return (

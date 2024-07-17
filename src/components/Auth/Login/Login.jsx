@@ -43,7 +43,7 @@ function Login() {
         <h2 className='text-center mb-4'>Login</h2>
         {error && <Alert variant='danger'>{error}</Alert>}
         <Card.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} className='d-flex flex-column'>
             <Form.Group className="mb-2" controlId="Email">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -55,7 +55,7 @@ function Login() {
                required />
             </Form.Group>
             <Form.Group className="mb-2" controlId="password">
-              <Form.Label>Password</Form.Label>
+              <Form.Label className='text-end'>Password</Form.Label>
               <Form.Control 
               name='password'
               type="password" 
@@ -63,6 +63,9 @@ function Login() {
               onChange={handleChange} 
               required />
             </Form.Group>
+            <Form.Text className='text-end'>
+              <a href="/forgot-password">Forgot password</a>
+            </Form.Text>
             <Button variant='success' type="submit" className='w-100 mt-4 '>Log In</Button>
           </Form>
         </Card.Body>
