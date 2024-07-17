@@ -13,7 +13,7 @@ function Signup() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signup, addUser } = useAuth();
+  const { signup, addUser, verifyUser, updateDisplayName } = useAuth();
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -33,16 +33,19 @@ function Signup() {
       setError("");
       setLoading(true);
       await signup(formValues.email, formValues.password).then((userCred) => {
+        //add and verify the user
         const user = userCred.user;
         addUser(user.uid, {name:formValues.name})
+        verifyUser()
+      }).then(() => {
+        //reset the form
         setFormValues({name: "", email: "", password:"", confirmPassword: ""})
         setLoading(false);
-        // navigate("/dashboard");
-        console.log(user);
-      });
+        //update the display name
+        updateDisplayName(formValues.name);
+        navigate("/dashboard");
+      })
 
-      
-      
     } catch (error) {
       setError("Failed to create an account " + error);
     }

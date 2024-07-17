@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { auth } from '../firebase/firebase'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateCurrentUser } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut, updateCurrentUser, updateProfile } from 'firebase/auth';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 
 import { db } from '../firebase/firebase';
@@ -33,12 +33,23 @@ export function AuthProvider({ children }) {
           });
     }
 
+    function verifyUser(){
+        return sendEmailVerification(auth.currentUser)
+    }
+
     function login(email, pass) {
-        return signInWithEmailAndPassword(auth, email, pass);
+        return signInWithEmailAndPassword(auth, email, pass)
+        
     }
 
     function logout() {
         return signOut(auth)
+    }
+
+    function updateDisplayName(name){
+        updateProfile(auth.currentUser, {
+            displayName: name
+        })
     }
 
     function updateEmail(uid, email) {
@@ -48,6 +59,8 @@ export function AuthProvider({ children }) {
         currentUser,
         signup,
         addUser,
+        verifyUser,
+        updateDisplayName,
         login,
         logout
     }
