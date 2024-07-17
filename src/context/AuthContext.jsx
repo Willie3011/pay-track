@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { auth } from '../firebase/firebase'
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateCurrentUser } from 'firebase/auth';
+import { Timestamp, doc, setDoc } from 'firebase/firestore';
 
+import { db } from '../firebase/firebase';
 
 const AuthContext = React.createContext();
 
 export function useAuth() {
     return useContext(AuthContext)
 }
+
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
 
@@ -21,6 +24,13 @@ export function AuthProvider({ children }) {
 
     function signup(email, pass) {
         return createUserWithEmailAndPassword(auth, email, pass)
+    }
+
+    function addUser(user){
+        setDoc(doc(db, "users", currentUser.uid), {
+            ...user,
+            createdAt: Timestamp.fromDate(new Date)
+          });
     }
 
     function login(email, pass) {
@@ -37,6 +47,7 @@ export function AuthProvider({ children }) {
     const value = {
         currentUser,
         signup,
+        addUser,
         login,
         logout
     }

@@ -1,21 +1,19 @@
-import Form from "react-bootstrap/Form";
-import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
+import {Form, Card, Alert, Button } from "react-bootstrap";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../../context/AuthContext";
-import { Container } from "react-bootstrap";
 
 function Signup() {
   const [formValues, setFormValues] = useState({
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [error, setError] = useState("");
-  const { signup } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { signup, addUser } = useAuth();
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -33,11 +31,19 @@ function Signup() {
 
     try {
       setError("");
+      setLoading(true);
       await signup(formValues.email, formValues.password);
       
-      //clear form
-      setFormValues({email: "", password:"", confirmPassword: ""});
-      navigate("/dashboard");
+      try{
+        await addUser({name:formValues.name})
+        setFormValues({name: "", email: "", password:"", confirmPassword: ""});
+        setLoading(false);
+        navigate("/dashboard");
+      }
+      catch (error){
+        setError(error.message);
+      }
+      
     } catch (error) {
       setError("Failed to create an account " + error);
     }
@@ -50,11 +56,12 @@ function Signup() {
       <Card
         className="p-4 shadow-sm"
         style={{ maxWidth: "400px", width: "100%" }}>
-        <h2 className="text-center mb-2">Sign Up</h2>
+        <h2 className="text-center mb-0">Sign Up</h2>
+        <p className='text-center small mb-4'>Create an account using email address</p>
         {error && <Alert variant="danger">{error}</Alert>}
         <Card.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-2" controlId="Email">
+            <Form.Group className="mb-2" controlId="Name">
               <Form.Label className="mb-0">Full Name</Form.Label>
               <Form.Control
                 name="name"
@@ -100,8 +107,8 @@ function Signup() {
                 numbers, and must not contain spaces or special characters.
               </Form.Text>
             </Form.Group>
-            <Button variant="success" type="submit" className="w-100">
-              Sign Up
+            <Button variant="success" type="submit" className="w-100" disabled={loading ? true : false}>
+              Create an Account
             </Button>
           </Form>
         </Card.Body>
