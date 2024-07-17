@@ -33,7 +33,7 @@ function Login() {
 
   return (
     <div className='d-flex flex-column align-items-center' style={{ width: "100%" }}>
-      <Card className='p-4' style={{ maxWidth: "400px", width: "100%" }}>
+      <Card className='p-4 shadow-sm' style={{ maxWidth: "400px", width: "100%" }}>
         <h2 className='text-center mb-4'>Login</h2>
         {error && <Alert variant='danger'>{error}</Alert>}
         <Card.Body>
@@ -46,12 +46,12 @@ function Login() {
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter password" required />
             </Form.Group>
-            <Button variant='primary' type="submit" className='w-100 mt-4'>Log In</Button>
+            <Button variant='success' type="submit" className='w-100 mt-4 '>Log In</Button>
           </Form>
         </Card.Body>
       </Card>
       <div className='w-100 d-flex align-items-center justify-content-center mt-2 gap-2'>
-        Don't have an account ? <Link to="/login">Create an account</Link>
+        Don't have an account ? <Link to="/">Create an account</Link>
       </div>
     </div>
   )

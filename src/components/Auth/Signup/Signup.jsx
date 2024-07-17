@@ -26,6 +26,7 @@ function Signup() {
         try {
             setError("");
             await signup(email, password)
+            navigate('/dashboard');
             
         }
         catch (error) {
@@ -36,7 +37,7 @@ function Signup() {
 
     return (
         <div className='d-flex flex-column align-items-center' style={{width: "100%"}}>
-            <Card className='p-4' style={{maxWidth: "400px", width: "100%"}}>
+            <Card className='p-4 shadow-sm' style={{maxWidth: "400px", width: "100%"}}>
                 <h2 className='text-center mb-4'>Sign Up</h2>
                 {error && <Alert variant='danger'>{error}</Alert>}
                 <Card.Body>
