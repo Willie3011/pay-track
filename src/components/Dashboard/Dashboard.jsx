@@ -1,43 +1,56 @@
-import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
-import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../../context/AuthContext"
+import Table  from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { Stack } from "react-bootstrap";
 
 function Dashboard() {
-    const { currentUser, logout } = useAuth();
-    const navigate = useNavigate();
-    
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
 
-    console.log(currentUser)
-    function Logout() {
-        try {
-            logout()
-            navigate("/login")
-        }
-        catch (error) {
-            console.log(error)
-        }
+  console.log(currentUser);
+  function Logout() {
+    try {
+      logout();
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
     }
-    
-    return (
-        <div className='d-flex flex-column align-items-center' style={{ width: "100%" }}>
-            <Card className='p-4' style={{ maxWidth: "400px", width: "100%" }}>
-                <h2 className='text-center mb-4'>Dashboard</h2>
-                <Card.Body>
-                    <p><strong>Email Address:</strong> { currentUser.email }</p>
-                </Card.Body>
-                <Button variant='primary'>Update Profile</Button>
-                
-            </Card>
-            <div className='w-100 d-flex align-items-center justify-content-center mt-2 gap-2'>
-                <Button variant='link' onClick={() => Logout()}>Logout</Button>
-            </div>
-        </div>
-    )
+  }
+
+  return (
+    <div className="mt-2">
+      <Stack direction="horizontal" gap={3}>
+        <h2
+          className="display-6 fw-normal p-2 me-auto"
+          style={{ fontSize: "2rem" }}>
+          Your Hours
+        </h2>
+        <Button variant="dark" className="p-2 fw-bold btn-sm">
+          Add Hours
+        </Button>
+      </Stack>
+      <div className="mt-5">
+        <Table stripped className="bg-light">
+          <thead>
+            <tr>
+              <th width="auto">ID</th>
+              <th width="1000">Date</th>
+              <th width="500">Hours</th>
+              <th width="800">Pay per day</th>
+              <th width="750">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+          <tfoot className="d-flex align-items-center">
+            No data
+          </tfoot>
+            
+        </Table>
+      </div>
+    </div>
+  );
 }
 
-export default Dashboard
+export default Dashboard;
