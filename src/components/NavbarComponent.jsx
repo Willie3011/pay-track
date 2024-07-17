@@ -3,6 +3,14 @@ import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 function NavbarComponent() {
   const { currentUser, logout } = useAuth();
+  function Logout() {
+    try {
+      logout();
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <Navbar expand="lg" className="bg-white">
       <Container>
@@ -18,7 +26,7 @@ function NavbarComponent() {
               </Navbar.Text>
               <div className="vr" style={{height: ""}}></div>
               <Navbar.Text>
-                <a href="/login" onClick={logout}>Log out</a>
+                <a href="/login" onClick={Logout} className="fw-bold p-2" style={{textDecoration:"none"}}>Log out</a>
               </Navbar.Text>
           </div>
         ) : (
