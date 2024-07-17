@@ -32,17 +32,16 @@ function Signup() {
     try {
       setError("");
       setLoading(true);
-      await signup(formValues.email, formValues.password);
-      
-      try{
-        await addUser({name:formValues.name})
-        setFormValues({name: "", email: "", password:"", confirmPassword: ""});
+      await signup(formValues.email, formValues.password).then((userCred) => {
+        const user = userCred.user;
+        addUser(user.uid, {name:formValues.name})
+        setFormValues({name: "", email: "", password:"", confirmPassword: ""})
         setLoading(false);
-        navigate("/dashboard");
-      }
-      catch (error){
-        setError(error.message);
-      }
+        // navigate("/dashboard");
+        console.log(user);
+      });
+
+      
       
     } catch (error) {
       setError("Failed to create an account " + error);

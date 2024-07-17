@@ -26,8 +26,8 @@ export function AuthProvider({ children }) {
         return createUserWithEmailAndPassword(auth, email, pass)
     }
 
-    function addUser(user){
-        setDoc(doc(db, "users", currentUser.uid), {
+    function addUser(userId, user){
+        setDoc(doc(db, "users", userId), {
             ...user,
             createdAt: Timestamp.fromDate(new Date)
           });
