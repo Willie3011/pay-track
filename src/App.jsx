@@ -11,16 +11,18 @@ import Profile from "./components/Auth/Profile/Profile";
 function App() {
   const { currentUser } = useAuth();
   return (
-    <div className="bg-light o">
+    <div className="bg-light">
       <Navbar />
-      <Container
-        className=""
-        style={{ height: "100vh" }}>
+      <Container style={{ height: "100vh" }}>
         <Router>
           <Routes>
-            <Route exact path="/" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route exact path="/forgot-password" element={<ForgotPassword />} />
+              <Route exact path="/" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+              <Route
+                
+                path="/forgot-password"
+                element={<ForgotPassword />}
+              />
             {currentUser ? (
               <>
                 <Route path="/dashboard" element={<Dashboard />} />
