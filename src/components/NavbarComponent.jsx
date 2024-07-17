@@ -2,21 +2,24 @@ import React from "react";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 function NavbarComponent() {
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
   return (
     <Navbar expand="lg" className="bg-white">
       <Container>
         <Navbar.Brand
-          href={currentUser ? "/dashboard" : "/"}
+          href={currentUser ? "/dashboard" : "/login"}
           className="fw-bold text-success">
           Pay Track
         </Navbar.Brand>
         {currentUser ? (
-          <div className="">
-              <Navbar.Text className="text-muted fw-bold">
+          <div className="d-flex align-items-center justify-content-center gap-2">
+              <Navbar.Text className="text-muted fw-bold p-2">
                 Signed in as: <a href="/profile" className="text-dark" style={{textDecoration: "none"}}>{currentUser.email}</a>
               </Navbar.Text>
-
+              <div className="vr" style={{height: ""}}></div>
+              <Navbar.Text>
+                <a href="/login" onClick={logout}>Log out</a>
+              </Navbar.Text>
           </div>
         ) : (
             <div className="">
