@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { db } from "../firebase/firebase";
-import { collection, doc, getDocs, addDoc, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDocs, addDoc, onSnapshot, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 
 const HoursContext = React.createContext();
@@ -26,21 +26,35 @@ export function HoursProvider({ children }) {
     })
   }
 
+  async function getHourData(userId, hoursId){
+    const hoursDocRef = doc(db, 'users', userId, 'workHours', hoursId);
+    return (await getDoc(hoursDocRef)).data();
+  }
+
   async function addHours(userId, hours) {
     const userDocRef = getUserRef(userId);
     const workHoursColRef = collection(userDocRef, "workHours");
     return await addDoc(workHoursColRef, hours);
   }
 
-  function editHours() {}
+  function editHours(userId, hourId, hours) {
+    const hoursDocRef = doc(db, 'users', userId, 'workHours', hourId);
+    return updateDoc(hoursDocRef, hours)
+  }
 
-  function deleteHours() {}
+  function deleteHours(userId, hoursId) {
+    const workDocRef = doc(db, 'users', userId, 'workHours', hoursId);
+    return deleteDoc(workDocRef);
+  }
 
 
   const value = {
     hours,
+    getHourData,
     getHours,
     addHours,
+    editHours,
+    deleteHours
   };
   return (
     <HoursContext.Provider value={value}>{children}</HoursContext.Provider>
