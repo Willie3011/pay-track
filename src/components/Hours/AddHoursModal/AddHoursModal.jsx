@@ -73,11 +73,27 @@ function AddHoursModal({ showModal, onClose, userId, existingEntries }) {
     for (const entry of filteredEntries) {
       await addHours(userId, entry);
     }
+    setEntries([]);
+    onClose();
   }
 
-  const renderTimeOptions = () => {
+  const renderFromOptions = () => {
     const hours = [];
-    for (let i = 5; i <= 21; i++) {
+    for (let i = 5; i <= 11; i++) {
+      const hour = i.toString().padStart(2, "0") + ":00";
+      hours.push(
+        <option key={hour} value={hour}>
+          {hour}
+        </option>
+      );
+    }
+    return hours;
+  };
+
+
+  const renderToOptions = () => {
+    const hours = [];
+    for (let i = 12; i <= 21; i++) {
       const hour = i.toString().padStart(2, "0") + ":00";
       hours.push(
         <option key={hour} value={hour}>
@@ -147,7 +163,7 @@ function AddHoursModal({ showModal, onClose, userId, existingEntries }) {
                     value={formValues.from}
                     onChange={handleChange}>
                     <option>Select Hours</option>
-                    {renderTimeOptions()}
+                    {renderFromOptions()}
                   </Form.Select>
                 </Form.Group>
                 <Form.Group>
@@ -157,7 +173,7 @@ function AddHoursModal({ showModal, onClose, userId, existingEntries }) {
                     value={formValues.to}
                     onChange={handleChange}>
                     <option>Select Hours</option>
-                    {renderTimeOptions()}
+                    {renderToOptions()}
                   </Form.Select>
                 </Form.Group>
               </Stack>

@@ -4,14 +4,16 @@ import { MdAdd, MdDelete, MdEdit } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
 import { useHours } from "../../context/HoursContext";
 import AddHoursModal from "../Hours/AddHoursModal/AddHoursModal";
+import Pagination from "../Pagination/Pagination";
 
 function Dashboard() {
   const { currentUser } = useAuth();
   const { getHours, hours } = useHours();
-
   const [showModal, setShowModal] = useState(false);
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const ENTRIESPERPAGE = 10;
 
+  //realtime hours update
   useEffect(() => {
     if (!currentUser) return;
     const unsub = getHours(currentUser.uid);
@@ -19,12 +21,17 @@ function Dashboard() {
     return () => unsub;
   }, [currentUser]);
 
-  
-
+  //Pagination
+  const totalPages = Math.ceil(hours.length / ENTRIESPERPAGE);
+  const indexOfLastEntry = currentPage * ENTRIESPERPAGE;
+  const indexOfFirstEntry = indexOfLastEntry - ENTRIESPERPAGE;
+  const currentEntries = hours
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .slice(indexOfFirstEntry, indexOfLastEntry);
   const handleClose = () => setShowModal(false);
 
   return (
-    <div className="mt-2">
+    <div className="mt-2 mb-3">
       <Stack direction="horizontal" gap={3}>
         <h2
           className="display-6 fw-normal p-2 me-auto"
@@ -46,25 +53,25 @@ function Dashboard() {
             <MdAdd style={{ fontSize: "20px" }} />
           </Button>
         </Stack>
-        <Table stripped hover className="mt-2">
+        <Table hover responsive className="mt-2 mb-3">
           <thead>
             <tr>
-              <th width="auto">ID</th>
-              <th width="400">Date</th>
-              <th width="500">Hours</th>
-              <th width="800">Pay per day</th>
-              <th width="750">Actions</th>
+              <th >ID</th>
+              <th >Date</th>
+              <th >Hours</th>
+              <th >Daily pay</th>
+              <th >Actions</th>
             </tr>
           </thead>
           <tbody>
-            {hours.map((hour) => (
-              <tr key={hour.id}>
+            {currentEntries.map((hour) => (
+              <tr key={hour.id} id={hour.id}>
                 <td>{hour.id}</td>
                 <td>{hour.date}</td>
-                <td className="bg-success">{hour.hours || "-"}</td>
+                <td>{hour.hours || "-"}</td>
                 <td>{"-"}</td>
                 <td>
-                  <Stack direction="horizontal" gap={2}>
+                  <Stack direction="horizontal" gap={2} className="col-md-3">
                     <Button variant="outline-dark" className="d-flex btn-sm">
                       <MdEdit />
                     </Button>
@@ -77,6 +84,13 @@ function Dashboard() {
             ))}
           </tbody>
         </Table>
+        <div className="mt-2 d-flex align-items-center justify-content-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
       {showModal && (
         <AddHoursModal
