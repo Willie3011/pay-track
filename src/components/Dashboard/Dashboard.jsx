@@ -5,11 +5,14 @@ import { useAuth } from "../../context/AuthContext";
 import { useHours } from "../../context/HoursContext";
 import AddHoursModal from "../Hours/AddHoursModal/AddHoursModal";
 import Pagination from "../Pagination/Pagination";
+import EditHoursModal from "../Hours/EditHours/EditHoursModal";
 
 function Dashboard() {
   const { currentUser } = useAuth();
-  const { getHours, hours } = useHours();
-  const [showModal, setShowModal] = useState(false);
+  const { getHours, hours, deleteHours, getHourData } = useHours();
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editId, setEditId] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const ENTRIESPERPAGE = 10;
 
@@ -28,7 +31,23 @@ function Dashboard() {
   const currentEntries = hours
     .sort((a, b) => new Date(a.date) - new Date(b.date))
     .slice(indexOfFirstEntry, indexOfLastEntry);
-  const handleClose = () => setShowModal(false);
+
+  const handleAddModalClose = () => setShowAddModal(false);
+  const handleEditModalClose = () => setShowEditModal(false);
+
+  async function handleEdit(hourId) {
+    setEditId(hourId);
+    setShowEditModal(true);
+  }
+
+  //delete hours
+  async function deleteHoursData(hoursId) {
+    try {
+      await deleteHours(currentUser.uid, hoursId);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="mt-2 mb-3">
@@ -46,7 +65,7 @@ function Dashboard() {
           </Button>
           <Button variant="light">View Calendar</Button>
           <Button
-            onClick={() => setShowModal(true)}
+            onClick={() => setShowAddModal(true)}
             variant="light"
             className="p-2 d-flex align-content-center justify-content-center"
             style={{ height: "40px", width: "40px" }}>
@@ -56,11 +75,11 @@ function Dashboard() {
         <Table hover responsive className="mt-2 mb-3">
           <thead>
             <tr>
-              <th >ID</th>
-              <th >Date</th>
-              <th >Hours</th>
-              <th >Daily pay</th>
-              <th >Actions</th>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Hours</th>
+              <th>Daily pay</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -72,10 +91,16 @@ function Dashboard() {
                 <td>{"-"}</td>
                 <td>
                   <Stack direction="horizontal" gap={2} className="col-md-3">
-                    <Button variant="outline-dark" className="d-flex btn-sm">
+                    <Button
+                      variant="outline-dark"
+                      className="d-flex btn-sm"
+                      onClick={() => handleEdit(hour.id)}>
                       <MdEdit />
                     </Button>
-                    <Button variant="outline-danger" className="d-flex btn-sm">
+                    <Button
+                      variant="outline-danger"
+                      className="d-flex btn-sm"
+                      onClick={() => deleteHoursData(hour.id)}>
                       <MdDelete />
                     </Button>
                   </Stack>
@@ -92,12 +117,20 @@ function Dashboard() {
           />
         </div>
       </div>
-      {showModal && (
+      {showAddModal && (
         <AddHoursModal
-          showModal={showModal}
-          onClose={handleClose}
+          showModal={showAddModal}
+          onClose={handleAddModalClose}
           userId={currentUser.uid}
           existingEntries={hours}
+        />
+      )}
+      {showEditModal && (
+        <EditHoursModal
+          showModal={showEditModal}
+          onClose={handleEditModalClose}
+          userId={currentUser.uid}
+          editHourId={editId}
         />
       )}
     </div>
