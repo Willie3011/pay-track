@@ -15,6 +15,8 @@ function AddHoursModal({ showModal, onClose, userId, existingEntries }) {
   const { addHours } = useHours();
   const [entries, setEntries] = useState([]);
   const [key, setKey] = useState("workingDay");
+  const [isLoading, setIsLoading] = useState(false);
+  
   
   const handleAddEntry = () => {
     if (formValues.date) {
@@ -69,11 +71,18 @@ function AddHoursModal({ showModal, onClose, userId, existingEntries }) {
   async function handleSave(e) {
     e.preventDefault();
 
+    setIsLoading(true);
     const filteredEntries = removeDuplicates(entries, existingEntries);
     for (const entry of filteredEntries) {
-      await addHours(userId, entry);
+      try{
+        await addHours(userId, entry);
+      }
+      catch(err) {
+        console.log(err)
+      }
     }
     setEntries([]);
+    setIsLoading(false);
     onClose();
   }
 
@@ -248,7 +257,7 @@ function AddHoursModal({ showModal, onClose, userId, existingEntries }) {
         <Button variant="light" onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="success" onClick={handleSave}>
+        <Button variant="success" onClick={handleSave} disabled={isLoading ? true : false}>
           Save
         </Button>
       </Modal.Footer>
