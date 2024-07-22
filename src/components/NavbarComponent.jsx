@@ -1,46 +1,62 @@
 import React from "react";
-import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import {
+  Container,
+  Navbar,
+  Nav,
+  Dropdown,
+  DropdownButton,
+  ButtonGroup,
+} from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
 function NavbarComponent() {
   const { currentUser, logout } = useAuth();
+
   function Logout() {
     try {
       logout();
-      navigate("/login");
     } catch (error) {
       console.log(error);
     }
   }
+
   return (
-    <Navbar expand="lg" className="bg-white">
-      <Container>
+    <Navbar expand="lg" className="bg-white shadow-sm sticky-top">
+      <Container >
         <Navbar.Brand
           href={currentUser ? "/dashboard" : "/login"}
           className="fw-bold text-success">
           Pay Track
         </Navbar.Brand>
         {currentUser ? (
-          <div className="d-flex align-items-center justify-content-center gap-2">
-              <Navbar.Text className="text-muted fw-bold p-2">
-                Signed in as: <a href="/profile" className="text-dark" style={{textDecoration: "none"}}>{currentUser.email}</a>
-              </Navbar.Text>
-              <div className="vr" style={{height: ""}}></div>
-              <Navbar.Text>
-                <a href="/login" onClick={Logout} className="fw-bold p-2" style={{textDecoration:"none"}}>Log out</a>
-              </Navbar.Text>
+          <div className="m mx-2">
+            <DropdownButton
+              as={ButtonGroup}
+              id="dropdown"
+              title={<FaUserCircle />}
+              variant="light"
+              align='end'
+              style={{ width: "40px", height: "40px" }}>
+              <Dropdown.Header className="fw-bold">
+                {currentUser.displayName}
+              </Dropdown.Header>
+              <Dropdown.Item href="/profile">Profile</Dropdown.Item>
+              <Dropdown.Item href="/login" onClick={Logout}>
+                Log out
+              </Dropdown.Item>
+            </DropdownButton>
           </div>
         ) : (
-            <div className="">
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="d-flex bg-light">
-                  <Nav.Link>Home</Nav.Link>
-                  <Nav.Link>Home</Nav.Link>
-                  <Nav.Link>Home</Nav.Link>
-                </Nav>
-              </Navbar.Collapse>
-            </div>
-          )}
+          <div className="">
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="d-flex bg-light">
+                <Nav.Link>Home</Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
+          </div>
+        )}
       </Container>
     </Navbar>
   );

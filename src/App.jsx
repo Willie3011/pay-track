@@ -11,7 +11,7 @@ import Profile from "./components/Auth/Profile/Profile";
 function App() {
   const { currentUser } = useAuth();
   return (
-    <div className="bg-light">
+    <div className="bg-white">
       <Navbar />
       <Container style={{ height: "100vh" }}>
         <Router>
