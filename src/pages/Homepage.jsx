@@ -1,10 +1,9 @@
-const Homepage = () => {
-    return (
-        <div className="min-h-screen">
-            Home page
+import React from 'react'
 
-        </div>
-    )
+const homepage = () => {
+  return (
+    <div>homepage</div>
+  )
 }
 
-export default Homepage;
+export default homepage
