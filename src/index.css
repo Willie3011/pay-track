@@ -3,4 +3,10 @@
 
 @theme {
   --font-Poppins: 'Poppins', sans-serif;
+  --color-primary: #1f4b2c;
+  --color-secondary: #4d7111;
+  --color-accent: #c3e956;
+  --color-accent-2: #91eaaf;
+  --color-creme-white: #f4fffc;
+
 }
