@@ -1,8 +1,11 @@
 import React from 'react'
+import Hero from '../components/Hero'
 
 const homepage = () => {
   return (
-    <div>homepage</div>
+    <div className='min-h-screen'>
+        <Hero/>
+    </div>
   )
 }
 

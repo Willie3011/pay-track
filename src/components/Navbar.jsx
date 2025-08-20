@@ -61,11 +61,11 @@ const Navbar = ({open, setOpen}) => {
         {/* Mobile menu */}
         <div
           className={`${
-            open ? "left-0" : "-left-[999px]"
+            open ? "left-0" : "-left-[9999px]"
           } absolute top-0 flex min-h-screen w-3/4 bg-white text-black shadow-sm items-center justify-center z-10 duration-300`}>
         
             {/* close button */}
-            <button onClick={() => setOpen(false)} className="absolute top-4 right-4 h-8 w-8 rounded-2xl text-gray-500 hover:text-gray-900 hover:bg-gray-100 flex items-center justify-center duration-300 cursor-pointer"><MdClose/></button>
+            <button onClick={() => setOpen(false)} className="absolute top-4 right-4 h-8 w-8 text-2xl rounded-2xl text-gray-500 hover:text-gray-900 hover:bg-gray-100 flex items-center justify-center duration-300 cursor-pointer"><MdClose/></button>
           <ul className="flex flex-col p-8 gap-16 items-center">
             <li>
               <NavLink
