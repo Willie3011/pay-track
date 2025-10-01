@@ -1,11 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdClose, MdMenu } from "react-icons/md";
 import { Link, NavLink } from "react-router";
 
-const Navbar = ({open, setOpen}) => {
+const Navbar = ({ open, setOpen }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      }
+      else {
+        setIsScrolled(false)
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    }
+  }, []);
+
 
   return (
-    <nav className="h-20 w-full bg-primary text-white relative">
+    <nav className={`sticky top-0 left-0 h-20 w-full z-50 duration-300 ${isScrolled ? "bg-white text-primary shadow-md" : "bg-primary text-white"}`}>
       <section className="max-w-7xl h-full mx-auto p-5 flex items-center justify-between">
         <Link to="/" className="font-bold text-2xl">
           Pay Track

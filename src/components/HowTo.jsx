@@ -4,7 +4,7 @@ import { MdWorkHistory } from "react-icons/md";
 
 const HowTo = () => {
   return (
-    <section className="min-h-full px-5 py-20 max-lg:py-22 bg-light-green">
+    <section className="min-h-full px-5 py-20 max-lg:py-22">
       <div className=" max-w-7xl mx-auto flex flex-col items-center gap-6">
         <h2 className="-mb-4 text-4xl font-bold text-gray-900 text-center max-sm:text-3xl text-balance">
           Your Salary, Calculated with Confidence
