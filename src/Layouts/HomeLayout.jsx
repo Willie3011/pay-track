@@ -5,9 +5,9 @@ import { useState } from "react";
 
 const HomeLayout = () => {
     const [open, setOpen] = useState(false);
-    return <main className="font-Poppins w-full h-full">
-        <Navbar open={open} setOpen={setOpen}/>
-        <div className={`absolute inset-0 bg-black opacity-50 z-0 ${open ? "block" : "hidden"}`}></div>
+    return <main className="font-Poppins w-full min-h-screen relative">
+        <Navbar open={open} setOpen={setOpen} />
+        <div onClick={() => setOpen(false)} className={`fixed inset-0 w-screen h-screen bg-black/50 z-40 ${open ? "block" : "hidden"}`}></div>
         <Outlet/>
         <Footer/>
     </main>
